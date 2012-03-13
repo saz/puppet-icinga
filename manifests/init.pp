@@ -23,8 +23,8 @@ class icinga(
   $service_enable = $icinga::params::service_enable,
   $service_hasstatus = $icinga::params::service_hasstatus,
   $service_hasrestart = $icinga::params::service_hasrestart,
-  $service_pattern = $icinga::params::service_pattern,
-) {
+  $service_pattern = $icinga::params::service_pattern
+) inherits icinga::params {
 
   validate_bool(
     $autoupgrade,
