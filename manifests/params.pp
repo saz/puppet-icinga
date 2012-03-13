@@ -4,7 +4,7 @@ class icinga::params {
       $package = 'icinga'
       $config_dir = '/etc/icinga/'
       $config_dir_purge = true
-      $config_dir_recurse = true
+      $config_dir_recurse = false
       $config_file = "${config_dir}icinga.cfg"
       $service_ensure = 'running'
       $service = 'icinga'

@@ -80,7 +80,7 @@ class icinga(
     ensure  => $dir_ensure,
     owner   => 'root',
     group   => 'root',
-    mode    => '0640',
+    mode    => '0755',
     purge   => $config_dir_purge,
     recurse => $config_dir_recurse,
     force   => true,
@@ -97,6 +97,10 @@ class icinga(
   }
 
   file { "${config_dir}apache2.conf":
+    ensure => file,
+  }
+
+  file { "${config_dir}htpasswd.users":
     ensure => file,
   }
 
@@ -119,7 +123,9 @@ class icinga(
   }
 
   file { "${config_dir}objects":
-    ensure => directory,
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
   }
 
   file { "${config_dir}objects/services/":
