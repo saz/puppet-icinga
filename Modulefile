@@ -1,0 +1,8 @@
+name    'saz-icinga'
+version '1.0.0'
+source 'git://github.com/saz/puppet-icinga.git'
+author 'saz'
+license 'Apache License, Version 2.0'
+summary 'Manage Icinga via puppet'
+description 'Manage Icinga via puppet'
+project_page 'https://github.com/saz/puppet-icinga'
