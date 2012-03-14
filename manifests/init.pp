@@ -81,7 +81,7 @@ class icinga(
   file { 'icinga.cfg':
     ensure  => file,
     path    => $icinga::params::config_file,
-    content => template('icinga/icinga.cfg'),
+    content => template('icinga/icinga.cfg.erb'),
     require => File[$icinga::params::config_dir],
     notify  => Service[$icinga::params::service],
   }
