@@ -8,7 +8,7 @@ class icinga::host {
     alias   => $::hostname,
     address => $::ipaddress,
     use     => 'generic-host',
-    target  => "${icinga::params::object_dir}hosts/${::fqdn}.cfg",
+    target  => "${icinga::params::objects_dir}hosts/${::fqdn}.cfg",
   }
 
   @@nagios_hostextinfo { $::fqdn:
@@ -16,7 +16,7 @@ class icinga::host {
     icon_image_alt  => $::lsbdistid,
     icon_image      => "base/${distro}.png",
     statusmap_image => "base/{$distro}.gd2",
-    target          => "${icinga::params::object_dir}hostextinfo/${::fqdn}.cfg",
+    target          => "${icinga::params::objects_dir}hostextinfo/${::fqdn}.cfg",
   }
 
   @@nagios_service { "check_ping_${::fqdn}":
@@ -24,6 +24,6 @@ class icinga::host {
     service_description => 'ping',
     use                 => 'generic-service',
     host_name           => $::fqdn,
-    target              => "${icinga::params::object_dir}services/${::fqdn}_check_ping.cfg",
+    target              => "${icinga::params::objects_dir}services/${::fqdn}_check_ping.cfg",
   }
 }
