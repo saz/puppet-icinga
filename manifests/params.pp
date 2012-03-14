@@ -16,5 +16,5 @@ class icinga::params {
     }
   }
 
-  $objects_dir = "${config_dir}objects"
+  $objects_dir = "${config_dir}objects/"
 }
