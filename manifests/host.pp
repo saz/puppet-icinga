@@ -1,4 +1,6 @@
 class icinga::host {
+  include icinga::params
+
   $distro = downcase($::lsbdistid)
 
   @@nagios_host { $::fqdn:
