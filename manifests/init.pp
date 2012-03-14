@@ -14,31 +14,13 @@
 class icinga(
   $ensure = 'present',
   $autoupgrade = false,
-  $package = $icinga::params::package,
-  $config_dir = $icinga::params::config_dir,
-  $config_dir_purge = $icinga::params::config_dir_purge,
-  $config_dir_recurse = $icinga::params::config_dir_recurse,
-  $service_ensure = $icinga::params::service_ensure,
-  $service = $icinga::params::service,
-  $service_enable = $icinga::params::service_enable,
-  $service_hasstatus = $icinga::params::service_hasstatus,
-  $service_hasrestart = $icinga::params::service_hasrestart,
-  $service_pattern = $icinga::params::service_pattern
+  $service_ensure = 'running',
+  $service_enable = true,
 ) inherits icinga::params {
 
   validate_bool(
     $autoupgrade,
-    $config_dir_purge,
-    $config_dir_recurse,
     $service_enable,
-    $service_hasstatus,
-    $service_hasrestart
-  )
-
-  validate_string(
-    $package,
-    $config_dir,
-    $service
   )
 
   case $ensure {
@@ -72,80 +54,114 @@ class icinga(
     }
   }
 
-  package { $package:
+  package { $icinga::params::package:
     ensure => $package_ensure,
   }
 
-  file { $config_dir:
+  file { $icinga::params::config_dir:
     ensure  => $dir_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    purge   => $config_dir_purge,
-    recurse => $config_dir_recurse,
+    purge   => true,
+    recurse => false,
     force   => true,
-    require => Package[$package],
-    notify  => Service[$service],
+    require => Package[$icinga::params::package],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}cgi.cfg":
+  file { 'cgi.cfg':
+    ensure  => file,
+    path    => "${icinga::params::config_dir}cgi.cfg",
+    content => template('icinga/cgi.cfg.erb'),
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
+  }
+
+  file { 'icinga.cfg':
+    ensure  => file,
+    path    => $icinga::params::config_file,
+    content => template('icinga/icinga.cfg'),
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
+  }
+
+  file { "${icinga::params::config_dir}apache2.conf":
     ensure => file,
   }
 
-  file { "${config_dir}icinga.cfg":
+  file { "${icinga::params::config_dir}htpasswd.users":
     ensure => file,
   }
 
-  file { "${config_dir}apache2.conf":
+  file { "${icinga::params::config_dir}commands.cfg":
     ensure => file,
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}htpasswd.users":
+  file { "${icinga::params::config_dir}resource.cfg":
     ensure => file,
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}commands.cfg":
-    ensure => file,
+  file { "${icinga::params::config_dir}modules":
+    ensure  => $dir_ensure,
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}resource.cfg":
-    ensure => file,
-  }
-
-  file { "${config_dir}modules":
-    ensure => directory,
-  }
-
-  file { "${config_dir}stylesheets":
-    ensure  => directory,
+  file { "${icinga::params::config_dir}stylesheets":
+    ensure  => $dir_ensure,
     recurse => false,
     purge   => false,
+    require => File[$icinga::params::config_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}objects":
-    ensure  => directory,
+  file { 'objects_dir':
+    ensure  => $dir_ensure,
+    path    => $icinga::params::objects_dir,
     purge   => true,
     recurse => true,
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}objects/services/":
-    ensure => directory,
+  file { 'services_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}services/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
   
-  file { "${config_dir}objects/hosts/":
-    ensure => directory,
+  file { 'hosts_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}hosts/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}objects/commands/":
-    ensure => directory,
+  file { 'commands_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}commands/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}objects/hostgroups/":
-    ensure => directory,
+  file { 'hostgroups_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}hostgroups/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
 
-  file { "${config_dir}objects/hostextinfo/":
-    ensure => directory,
+  file { 'hostextinfo_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}hostextinfo/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
   }
 
   service { $service:
@@ -154,7 +170,6 @@ class icinga(
     hasstatus  => $service_hasstatus,
     hasrestart => $service_hasrestart,
     pattern    => $service_pattern,
-    require    => Package[$package],
+    require    => File['icinga.cfg'],
   }
-
 }
