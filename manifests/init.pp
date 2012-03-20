@@ -178,17 +178,17 @@ class icinga(
     refreshonly => true,
   }
 
-  Nagios_service<| |> {
+  Nagios_service<<||>> {
     require => File['services_dir'],
     notify  => Exec['nagios_chown'],
   }
 
-  Nagios_host<| |> {
+  Nagios_host<<||>> {
     require => File['hosts_dir'],
     notify  => Exec['nagios_chown'],
   }
 
-  Nagios_hostextinfo<| |> {
+  Nagios_hostextinfo<<||>> {
     require => File['hostextinfo_dir'],
     notify  => Exec['nagios_chown'],
   }
