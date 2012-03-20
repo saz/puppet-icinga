@@ -1,8 +1,6 @@
 class icinga::common {
   include icinga::params
 
-  $distro = downcase($::lsbdistid)
-
   icinga::host::host { $::fqdn: }
   icinga::host::hostextinfo { $::fqdn: }
 
