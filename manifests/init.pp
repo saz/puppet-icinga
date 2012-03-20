@@ -172,4 +172,27 @@ class icinga(
     pattern    => $service_pattern,
     require    => File['icinga.cfg'],
   }
+
+  exec { 'nagios_chown':
+    command     => "/bin/chown -R root:nagios '${icinga::params::objects_dir}'; /bin/chmod -R 640 '${icinga::params::objects_dir}'",
+    refreshonly => true,
+  }
+
+  Nagios_service {
+    require => File['services_dir'],
+    notify  => Exec['nagios_chown'],
+  }
+  Nagios_service <<||>>
+
+  Nagios_host {
+    require => File['hosts_dir'],
+    notify  => Exec['nagios_chown'],
+  }
+  Nagios_host <<||>>
+
+  Nagios_hostextinfo {
+    require => File['hostextinfo_dir'],
+    notify  => Exec['nagios_chown'],
+  }
+  Nagios_host <<||>>
 }
