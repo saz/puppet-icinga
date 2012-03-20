@@ -13,5 +13,6 @@ define icinga::timeperiod {
     thursday  => '00:00-24:00',
     friday    => '00:00-24:00',
     saturday  => '00:00-24:00',
+    target    => "${icinga::params::objects_dir}timeperiods/${name}.cfg",
   }
 }

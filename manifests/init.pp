@@ -164,6 +164,13 @@ class icinga(
     notify  => Service[$icinga::params::service],
   }
 
+  file { 'timeperiods_dir':
+    ensure  => $dir_ensure,
+    path   => "${icinga::params::objects_dir}timeperiods/",
+    require => File[$icinga::params::objects_dir],
+    notify  => Service[$icinga::params::service],
+  }
+
   service { $service:
     ensure     => $service_ensure_real,
     enable     => $service_enable,
