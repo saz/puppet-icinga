@@ -176,20 +176,18 @@ class icinga(
   exec { 'fix_icinga_perms':
     command     => "/bin/chown -R root:nagios '${icinga::params::objects_dir}'; /bin/chmod -R 640 '${icinga::params::objects_dir}'",
     refreshonly => true,
+    notify      => Service[$service],
   }
 
   Nagios_service <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['services_dir'],
   }
 
   Nagios_host <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['hosts_dir'],
   }
 
   Nagios_hostextinfo <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['hostextinfo_dir'],
   }
 }
