@@ -174,7 +174,7 @@ class icinga(
   }
 
   exec { 'fix_icinga_perms':
-    command     => "/bin/chown -R root:nagios '${icinga::params::objects_dir}'; /bin/chmod -R 640 '${icinga::params::objects_dir}'",
+    command     => "/bin/chown -R root:nagios '${icinga::params::objects_dir}'; /usr/bin/find ${icinga::params::objects_dir} -type f -exec chmod 640 '{}' \;",
     refreshonly => true,
     notify      => Service[$service],
   }
