@@ -176,6 +176,20 @@ class icinga(
     notify  => Service[$icinga::params::service],
   }
 
+  file { 'contacts_dir':
+    ensure  => $dir_ensure,
+    path    => "${icinga::params::objects_dir}contacts/",
+    require => File['objects_dir'],
+    notify  => Service[$icinga::params::service],
+  }
+
+  file { 'contactgroups_dir':
+    ensure  => $dir_ensure,
+    path    => "${icinga::params::objects_dir}contactgroups/",
+    require => File['objects_dir'],
+    notify  => Service[$icinga::params::service],
+  }
+
   service { $icinga::params::service:
     ensure     => $service_ensure_real,
     enable     => $service_enable,
@@ -214,5 +228,15 @@ class icinga(
   Nagios_timeperiod <<||>> {
     notify  => Exec['fix_icinga_perms'],
     require => File['objects_dir'],
+  }
+
+  Nagios_contact <<||>> {
+    notify  => Exec['fix_icinga_perms'],
+    require => File['contacts_dir'],
+  }
+
+  Nagios_contactgroup <<||>> {
+    notify  => Exec['fix_icinga_perms'],
+    require => File['contactgroups_dir'],
   }
 }
