@@ -87,21 +87,23 @@ class icinga(
   }
 
   file { "${icinga::params::config_dir}apache2.conf":
-    ensure => file,
+    ensure  => file,
+    require => File[$icinga::params::config_dir],
   }
 
   file { "${icinga::params::config_dir}htpasswd.users":
-    ensure => file,
+    ensure  => file,
+    require => File[$icinga::params::config_dir],
   }
 
   file { "${icinga::params::config_dir}commands.cfg":
-    ensure => file,
+    ensure  => file,
     require => File[$icinga::params::config_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { "${icinga::params::config_dir}resource.cfg":
-    ensure => file,
+    ensure  => file,
     require => File[$icinga::params::config_dir],
     notify  => Service[$icinga::params::service],
   }
@@ -128,48 +130,53 @@ class icinga(
     mode    => '0640',
     owner   => 'root',
     group   => 'nagios',
-    require => File[$icinga::params::objects_dir],
+    require => File[$icinga::params::config_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { 'services_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}services/",
-    require => File[$icinga::params::objects_dir],
+    path    => "${icinga::params::objects_dir}services/",
+    require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
   
   file { 'hosts_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}hosts/",
+    path    => "${icinga::params::objects_dir}hosts/",
+    require => File['objects_dir'],
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { 'commands_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}commands/",
+    path    => "${icinga::params::objects_dir}commands/",
+    require => File['objects_dir'],
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { 'hostgroups_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}hostgroups/",
+    path    => "${icinga::params::objects_dir}hostgroups/",
+    require => File['objects_dir'],
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { 'hostextinfo_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}hostextinfo/",
+    path    => "${icinga::params::objects_dir}hostextinfo/",
+    require => File['objects_dir'],
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
   file { 'timeperiods_dir':
     ensure  => $dir_ensure,
-    path   => "${icinga::params::objects_dir}timeperiods/",
+    path    => "${icinga::params::objects_dir}timeperiods/",
+    require => File['objects_dir'],
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
@@ -190,22 +197,27 @@ class icinga(
   }
 
   Nagios_service <<||>> {
-    notify => Exec['fix_icinga_perms'],
+    notify  => Exec['fix_icinga_perms'],
+    require => File['objects_dir'],
   }
 
   Nagios_host <<||>> {
-    notify => Exec['fix_icinga_perms'],
+    notify  => Exec['fix_icinga_perms'],
+    require => File['objects_dir'],
   }
 
   Nagios_hostextinfo <<||>> {
-    notify => Exec['fix_icinga_perms'],
+    notify  => Exec['fix_icinga_perms'],
+    require => File['objects_dir'],
   }
 
   Nagios_hostgroup <<||>> {
-    notify => Exec['fix_icinga_perms'],
+    notify  => Exec['fix_icinga_perms'],
+    require => File['objects_dir'],
   }
 
   Nagios_timeperiod <<||>> {
-    notify => Exec['fix_icinga_perms'],
+    notify  => Exec['fix_icinga_perms'],
+    require => File['objects_dir'],
   }
 }
