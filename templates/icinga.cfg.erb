@@ -51,14 +51,15 @@ cfg_dir=/etc/nagios-plugins/config
 #cfg_dir=/etc/icinga/switches
 #cfg_dir=/etc/icinga/routers
 
-cfg_dir=<%= config_dir %>objects/services
-cfg_dir=<%= config_dir %>objects/hosts
-cfg_dir=<%= config_dir %>objects/commands
-cfg_dir=<%= config_dir %>objects/hostgroups
-cfg_dir=<%= config_dir %>objects/hostextinfo
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>services
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>hosts
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>commands
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>hostgroups
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>hostextinfo
+cfg_dir=<%= scope.lookupvar('icinga::params::objects_dir') %>timeperiods
 
 # Definitions for broker modules like idoutils.cfg
-cfg_dir=<%= config_dir %>modules
+cfg_dir=<%= scope.lookupvar('icinga::params::config_dir') %>modules
 
 
 
