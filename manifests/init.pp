@@ -194,4 +194,8 @@ class icinga(
   Nagios_hostgroup <<||>> {
     notify => Exec['fix_icinga_perms'],
   }
+
+  Nagios_timeperiod <<||>> {
+    notify => Exec['fix_icinga_perms'],
+  }
 }
