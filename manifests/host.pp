@@ -1,29 +1,33 @@
-class icinga::host {
-  include icinga::params
+class icinga::host(
+  $icinga_hostname = $::fqdn,
+  $icinga_alias = $::hostname,
+  $icinga_ipaddress = $::ipaddress,
+  $distro = $::lsbdistid
+) inherits icinga::params {
 
-  $distro = downcase($::lsbdistid)
+  $distro_real = downcase($distro)
 
-  @@nagios_host { $::fqdn:
+  @@nagios_host { $icinga_hostname:
     ensure  => present,
-    alias   => $::hostname,
-    address => $::ipaddress,
+    alias   => $icinga_alias,
+    address => $icinga_ipaddress,
     use     => 'generic-host',
-    target  => "${icinga::params::objects_dir}hosts/${::fqdn}.cfg",
+    target  => "${icinga::params::objects_dir}hosts/${icinga_hostname}.cfg",
   }
 
-  @@nagios_hostextinfo { $::fqdn:
+  @@nagios_hostextinfo { $icinga_hostname:
     ensure          => present,
-    icon_image_alt  => $::lsbdistid,
-    icon_image      => "base/${distro}.png",
-    statusmap_image => "base/{$distro}.gd2",
-    target          => "${icinga::params::objects_dir}hostextinfo/${::fqdn}.cfg",
+    icon_image_alt  => $distro,
+    icon_image      => "base/${distro_real}.png",
+    statusmap_image => "base/{$distro_real}.gd2",
+    target          => "${icinga::params::objects_dir}hostextinfo/${icinga_hostname}.cfg",
   }
 
-  @@nagios_service { "check_ping_${::fqdn}":
+  @@nagios_service { "check_ping_${icinga_hostname}":
     check_command       => 'check_ping!5000,50%!5000,100%',
     service_description => 'ping',
     use                 => 'generic-service',
-    host_name           => $::fqdn,
-    target              => "${icinga::params::objects_dir}services/${::fqdn}_check_ping.cfg",
+    host_name           => $icinga_hostname,
+    target              => "${icinga::params::objects_dir}services/${icinga_hostname}_check_ping.cfg",
   }
 }
