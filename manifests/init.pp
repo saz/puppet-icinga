@@ -126,7 +126,7 @@ class icinga(
     purge   => true,
     recurse => true,
     mode    => '0640',
-    user    => 'root',
+    owner   => 'root',
     group   => 'nagios',
     require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
