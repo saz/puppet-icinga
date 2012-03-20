@@ -140,12 +140,11 @@ class icinga(
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
-  
+
   file { 'hosts_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hosts/",
     require => File['objects_dir'],
-    require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
@@ -153,7 +152,6 @@ class icinga(
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}commands/",
     require => File['objects_dir'],
-    require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
@@ -161,7 +159,6 @@ class icinga(
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hostgroups/",
     require => File['objects_dir'],
-    require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
@@ -169,7 +166,6 @@ class icinga(
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hostextinfo/",
     require => File['objects_dir'],
-    require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
@@ -177,23 +173,22 @@ class icinga(
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}timeperiods/",
     require => File['objects_dir'],
-    require => File[$icinga::params::objects_dir],
     notify  => Service[$icinga::params::service],
   }
 
-  service { $service:
+  service { $icinga::params::service:
     ensure     => $service_ensure_real,
     enable     => $service_enable,
-    hasstatus  => $service_hasstatus,
-    hasrestart => $service_hasrestart,
-    pattern    => $service_pattern,
+    hasstatus  => $icinga::params::service_hasstatus,
+    hasrestart => $icinga::params::service_hasrestart,
+    pattern    => $icinga::params::service_pattern,
     require    => File['icinga.cfg'],
   }
 
   exec { 'fix_icinga_perms':
     command     => "/bin/chown -R root:nagios '${icinga::params::objects_dir}'; /usr/bin/find ${icinga::params::objects_dir} -type f -exec chmod 640 '{}' \;",
     refreshonly => true,
-    notify      => Service[$service],
+    notify      => Service[$icinga::params::service],
   }
 
   Nagios_service <<||>> {
