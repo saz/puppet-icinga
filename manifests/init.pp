@@ -58,6 +58,14 @@ class icinga(
     ensure => $package_ensure,
   }
 
+  if $::osfamily == 'Debian' {
+    exec { 'debian_external_commands':
+      command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/icinga && dpkg-statoverride --update --add nagios www-data 2710 /var/lib/icinga/rw',
+      unless  => 'dpkg-statoverride --list nagios nagios 751 /var/lib/icinga && dpkg-statoverride --list nagios www-data 2710 /var/lib/icinga/rw',
+      notify  => Service[$icinga::params::service],
+    }
+  }
+
   file { $icinga::params::config_dir:
     ensure  => $dir_ensure,
     owner   => 'root',
