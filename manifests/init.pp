@@ -212,22 +212,22 @@ class icinga(
 
   Nagios_host <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['objects_dir'],
+    require => File['hosts_dir'],
   }
 
   Nagios_hostextinfo <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['objects_dir'],
+    require => File['hostextinfo_dir'],
   }
 
   Nagios_hostgroup <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['objects_dir'],
+    require => File['hostgroups_dir'],
   }
 
   Nagios_timeperiod <<||>> {
     notify  => Exec['fix_icinga_perms'],
-    require => File['objects_dir'],
+    require => File['timeperiods_dir'],
   }
 
   Nagios_contact <<||>> {
@@ -238,5 +238,10 @@ class icinga(
   Nagios_contactgroup <<||>> {
     notify  => Exec['fix_icinga_perms'],
     require => File['contactgroups_dir'],
+  }
+
+  Nagios_command <<||>> {
+    notify  => Exec['fix_icinga_perms'],
+    require => File['commands_dir'],
   }
 }
