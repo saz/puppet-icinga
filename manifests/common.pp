@@ -7,7 +7,6 @@ class icinga::common {
   icinga::host::hostextinfo { $::fqdn: }
 
   @@nagios_service { "check_ping_${::fqdn}":
-    service_name        => "check_ping_${::fqdn}",
     check_command       => 'check_ping!5000,50%!5000,100%',
     service_description => 'ping',
     use                 => 'generic-service',
