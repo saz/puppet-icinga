@@ -6,14 +6,14 @@ define icinga::host::host(
 ) {
   include icinga::params
 
-  $distro_real = downcase($distro)
+  $distro_lc = downcase($distro)
 
   @@nagios_host { $name:
     ensure     => present,
     alias      => $icinga_alias,
     address    => $icinga_ipaddress,
     use        => 'generic-host',
-    hostgroups => $icinga_hostgroups,
+    hostgroups => $distro_lc,
     target     => "${icinga::params::objects_dir}hosts/${name}.cfg",
   }
 }
