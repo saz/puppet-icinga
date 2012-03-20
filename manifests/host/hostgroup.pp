@@ -3,7 +3,7 @@ define icinga::host::hostgroup {
 
   $alias = capitalize($name)
 
-  nagios_hostgroup { $name:
+  @@nagios_hostgroup { $name:
     ensure => present,
     alias  => $alias,
     target => "${icinga::params::objects_dir}hostgroups/${name}.cfg",

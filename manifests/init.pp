@@ -180,14 +180,18 @@ class icinga(
   }
 
   Nagios_service <<||>> {
-    notify  => Exec['fix_icinga_perms'],
+    notify => Exec['fix_icinga_perms'],
   }
 
   Nagios_host <<||>> {
-    notify  => Exec['fix_icinga_perms'],
+    notify => Exec['fix_icinga_perms'],
   }
 
   Nagios_hostextinfo <<||>> {
-    notify  => Exec['fix_icinga_perms'],
+    notify => Exec['fix_icinga_perms'],
+  }
+
+  Nagios_hostgroup <<||>> {
+    notify => Exec['fix_icinga_perms'],
   }
 }
