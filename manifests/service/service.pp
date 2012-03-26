@@ -2,7 +2,6 @@ define icinga::service::service(
   $command,
   $servicegroups = undef,
   $host = $::fqdn,
-  $alias = $::hostname,
   $append_name = false
 ) {
   include icinga::params
@@ -16,7 +15,7 @@ define icinga::service::service(
   @@nagios_service { "${host}_${name}":
     ensure              => present,
     check_command       => $command_real,
-    host_name           => $alias,
+    host_name           => $host,
     servicegroups       => $servicegroups,
     service_description => $name,
     use                 => 'generic-service',
