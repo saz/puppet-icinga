@@ -253,35 +253,35 @@ class icinga(
     require => File['commands_dir'],
   }
 
-  resource { 'nagios_service':
+  resources { 'nagios_service':
     purge => true,
   }
 
-  resource { 'nagios_host':
+  resources { 'nagios_host':
     purge => true,
   }
 
-  resource { 'nagios_hostextinfo':
+  resources { 'nagios_hostextinfo':
     purge => true,
   }
   
-  resource { 'nagios_hostgroup':
+  resources { 'nagios_hostgroup':
     purge => true,
   }
 
-  resource { 'nagios_timeperiod':
+  resources { 'nagios_timeperiod':
     purge => true,
   }
 
-  resource { 'nagios_contact':
+  resources { 'nagios_contact':
     purge => true,
   }
 
-  resource { 'nagios_contactgroup':
+  resources { 'nagios_contactgroup':
     purge => true,
   }
 
-  resource { 'nagios_command':
+  resources { 'nagios_command':
     purge => true,
   }
 }
