@@ -145,6 +145,8 @@ class icinga(
   file { 'services_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}services/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -152,6 +154,8 @@ class icinga(
   file { 'hosts_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hosts/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -159,6 +163,8 @@ class icinga(
   file { 'commands_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}commands/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -166,6 +172,8 @@ class icinga(
   file { 'hostgroups_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hostgroups/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -173,6 +181,8 @@ class icinga(
   file { 'hostextinfo_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}hostextinfo/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -180,6 +190,8 @@ class icinga(
   file { 'timeperiods_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}timeperiods/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -187,6 +199,8 @@ class icinga(
   file { 'contacts_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}contacts/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
@@ -194,6 +208,8 @@ class icinga(
   file { 'contactgroups_dir':
     ensure  => $dir_ensure,
     path    => "${icinga::params::objects_dir}contactgroups/",
+    purge   => true,
+    recurse => true,
     require => File['objects_dir'],
     notify  => Service[$icinga::params::service],
   }
